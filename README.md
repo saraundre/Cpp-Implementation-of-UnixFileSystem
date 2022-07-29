@@ -201,22 +201,33 @@ Supporting Information
 --------------------------
 
 To put it simply, the Unix file system is a logical method of organizing and storing large amounts of data. 
-Files in Unix systems are organized into a multi-level hierarchy structure called a directory tree, which represents the tree-like structure that forms the file system. 
-The root directory is identified by the slash symbol, and it encompasses all files and directories in the file system. 
+Files in Unix systems are organized into a multi-level hierarchy structure called a directory tree, which represents the tree-like structure that forms the file system. The root directory is identified by the slash symbol, and it encompasses all files and directories in the file system. 
 As a result, each file or directory is uniquely identified by its name, the directory that it resides in, and a unique identifier called an inode.
 Our program implements an Inode-based file system through random access file and maintains 16MB of storage space. 
-The random-access file behaves like a large array of bytes stored in the file system. To perform functions in filesystem, we first seek to the specific point using the seek() method that sets the pointer position to the beginning point, followed by the operation such as read and write.  
+
+The random-access file behaves like a large array of bytes stored in the file system. To perform functions in filesystem, we first seek to the specific point using the seek() method that sets the pointer position to the beginning point, followed by the operation such as read and write.
+![image](https://user-images.githubusercontent.com/110232966/181749888-55368aea-61c5-48ce-9943-003552ff3430.png)
+
 The storage space is further divided into blocks of 1KB, resulting in a maximum of 16,384 blocks.
+![image](https://user-images.githubusercontent.com/110232966/181749922-c4501f8f-38f1-458f-a4c8-dd27310aa8be.png)
+
 Further, it is divided into five parts: Superblock, Inode , Block Bitmap, Inode space, and Data space.
 First, the Superblock contains the filesystem meta data, which identifies the filesystem's structure and the amount of disk space it occupies.
-As per a small file system standard, our program uses an inode of 128 bytes. The I-node table/space contains the metadata of the files and pointers to their respective data blocks. 
-Consequently, each inode contains ten direct pointers pointing to data blocks, and one indirect pointer pointing to an inode without data headers before pointing to data blocks.
-The I-node bitmaps occupy a segment of memory, consisting of 0s and 1, with 0 indicating a free I-node and 1 indicating that it is already occupied. When modifying a file system, this technique helps find a free location on the inode table quickly. The same applies to block bitmaps.
-Moreover, after file system allocation, the rest of the pending space is allocated to data space, which stores the raw data in blocks.   
-Lastly, the main () function provides a simple interface through which the user can interact with the filesystem and offers help and exit options. The help function lists down the supported commands, and the terminal reads the user input command and executes the corresponding functions to provide the desired output.Finally, the exit command terminates the program. At termination, the data is stored in a file named ufs.sys and can be loaded the next time the program is launched. The users can check how much disk space is consumed by the system through the sum command, which displays the usage details of inode and blocks. Moreover, the filesystem can be restored to its default state using the format command.
+As per a small file system standard, our program uses an inode of 128 bytes.
 
-![image](https://user-images.githubusercontent.com/110232966/181749888-55368aea-61c5-48ce-9943-003552ff3430.png)
-![image](https://user-images.githubusercontent.com/110232966/181749922-c4501f8f-38f1-458f-a4c8-dd27310aa8be.png)
+The I-node table/space contains the metadata of the files and pointers to their respective data blocks. 
+
+Consequently, each inode contains ten direct pointers pointing to data blocks, and one indirect pointer pointing to an inode without data headers before pointing to data blocks.
+
+The I-node bitmaps occupy a segment of memory, consisting of 0s and 1, with 0 indicating a free I-node and 1 indicating that it is already occupied. When modifying a file system, this technique helps find a free location on the inode table quickly. The same applies to block bitmaps.
+Moreover, after file system allocation, the rest of the pending space is allocated to data space, which stores the raw data in blocks. 
+
+Lastly, the main () function provides a simple interface through which the user can interact with the filesystem and offers help and exit options. The help function lists down the supported commands, and the terminal reads the user input command and executes the corresponding functions to provide the desired output.
+
+Finally, the exit command terminates the program. At termination, the data is stored in a file named ufs.sys and can be loaded the next time the program is launched. The users can check how much disk space is consumed by the system through the sum command, which displays the usage details of inode and blocks. Moreover, the filesystem can be restored to its default state using the format command.
+
+
+
 ![image](https://user-images.githubusercontent.com/110232966/181749956-99573de6-91a8-48a6-98c1-c710ce5f94b1.png)
 ![image](https://user-images.githubusercontent.com/110232966/181749988-a7fa73ab-4358-4671-a0b8-4b757cd7d500.png)
 ![image](https://user-images.githubusercontent.com/110232966/181750014-753731d0-e81b-48bb-be79-c54f5deaacc5.png)
