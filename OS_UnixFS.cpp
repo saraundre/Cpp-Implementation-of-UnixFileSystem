@@ -1579,10 +1579,6 @@ int main()
 	cout << " *                                                 *" << endl;
 	cout << " *               UNIX FILE SYSTEM                  *" << endl;
 	cout << " *                                                 *" << endl;
-	cout << " *      @Vondrea Cassey Andoko 201969990084        *" << endl;
-	cout << " *      @Lam Sung Foon Ryan  201969990099          *" << endl;
-	cout << " *      @Sara Sajid Undre  201969990298            *" << endl;
-	cout << " *                                                 *" << endl;
 	cout << " ***************************************************" << endl;
 	cout << "Enter 'help' for a list of commands" << endl;
 	cout << "Enter 'exit' to exit" << endl;
