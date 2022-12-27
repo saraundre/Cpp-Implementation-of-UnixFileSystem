@@ -6,8 +6,11 @@ Requirements
 --------------------------
 
 1．	Review Unix file system design and i-node usage.
+
 2．	Design and implement an i-node-based Unix-style file system.
+
 3．	Implement basic functionalities specified in the following section.
+
 4．	The task needs to be completed using C++ ONLY 
 
 
@@ -16,45 +19,50 @@ Tasks/Functionalities
 --------------------------
 
 The following functions are required in your file system: 
+
 1．	Allocate 16MB space in memory as the storage for your file system. The space is divided into blocks with block size 1KB 
+
 Assume address length is 24-bit，please design your virtual address structure.
 Design what information should be contained in an i-node
 The i-node should support 10 direct block addresses, and one indirect block address
 
 2．	The first a few blocks can be used for storing the i-nodes, and the first i-node can be used for the root directory (/). 
-	(You can design the structure as you like, as long as it is reasonable and well explained in your report.)
-
+	
 3．	Using random strings to fill the files you created. It means you just need to specify the file size (in KB) and path+name.
+
 4．	Following commands should be supported in your system：
-a)	A welcome message with the group info (names and IDs) when the system is launched. It is also the claim of your ‘copyright’
-b)	Create a file：createFile fileName fileSize  
-i.e.：createFile /dir1/myFile 10 (in KB)
-if fileSize > max file size, print out an error message.
 
-c)	Delete a file：deleteFile filename 
-i.e.：deleteFile /dir1/myFile
+	a)	A welcome message with the group info (names and IDs) when the system is launched. It is also the claim of your ‘copyright’
 
-d)	Create a directory：createDir 
-i.e.：createDir /dir1/sub1 (should support nested directory)
+	b)	Create a file：createFile fileName fileSize  
 
-e)	Delete a directory：deleteDir 
-i.e.:	deleteDir /dir1/sub1（The current working directory is not allowed to be deleted）
+		i.e.：createFile /dir1/myFile 10 (in KB)
+		if fileSize > max file size, print out an error message.
 
-f)	Change current working directory：changeDir 
-i.e.: changeDir /dir2 
+	c)	Delete a file：deleteFile filename 
+		i.e.：deleteFile /dir1/myFile
 
-g)	List all the files and sub-directories under current working directory：dir 
-You also need to list at least two file attributes. (i.e., file size, time created, etc.)
+	d)	Create a directory：createDir 
+		i.e.：createDir /dir1/sub1 (should support nested directory)
 
-h)	Copy a file: cp 
-i.e.: cp file1 file2
+	e)	Delete a directory：deleteDir 
+		i.e.:	deleteDir /dir1/sub1（The current working directory is not allowed to be deleted）
 
-i)	Display the usage of storage space：sum  
-Display the usage of the 16MB space. You need to list how many blocks are used and how many blocks are unused. 
+	f)	Change current working directory：changeDir 
+		i.e.: changeDir /dir2 
 
-j)	Print out the file contents: cat  
-Print out the contents of the file on the terminal
-i.	e:  cat /dir1/file1
+	g)	List all the files and sub-directories under current working directory：dir 
+		You also need to list at least two file attributes. (i.e., file size, time created, etc.)
+
+	h)	Copy a file: cp 
+		i.e.: cp file1 file2
+
+	i)	Display the usage of storage space：sum  
+		Display the usage of the 16MB space. You need to list how many blocks are used and how many blocks are unused. 
+
+	j)	Print out the file contents: cat  
+		Print out the contents of the file on the terminal
+		i.e:  cat /dir1/file1
 
 
 
@@ -62,6 +70,7 @@ i.	e:  cat /dir1/file1
 Project Report
 --------------------------
 [Background]
+
 Unix file system is a logical method of organizing and storing large amounts of information. The greatest advantage of this file system is that it makes it easy to manage. In Unix, everything is considered a file, including devices such as DVD-ROMS, USB devices, and floppy drives. In addition, a file is the smallest unit in which the information is stored. All files are organized into directories and these directories are organized into a tree-like structure called the file system.
 
 Files in Unix systems are organized into a multi-level hierarchy structure known as a directory tree. At the very top of the file, the system is a directory called “root” which is represented by a “/”. The root contains other files and directories. Each file or directory is uniquely identified by its name, the directory in which it resides, and a unique identifier called I-node. Finally, a Unix file system is self-contained. There are no dependencies between one filesystem and another.
@@ -72,6 +81,7 @@ To solve this issue, Marshall Kirk McKusick optimized the BSD 4.2's FFS (Fast Fi
 
 
 [Project design]
+
 In this experiment, we first wrote pseudocode, which we referred to as we code along. The pseudocode is shown in the following sections with its respective functions. For the memory allocation, 16MB of memory is allocated to the file system as storage. This space is further divided into blocks of 1KB size, resulting in a maximum of 16,384 blocks. Following a small file system standard, our inode is 128 bytes in size. Further, the cylindrical group is partitioned into Superblock, Inode Bitmap, Block Bitmap, Inode space, and Data space. In the first block, the Superblock contains filesystem metadata, which describes the organization of the filesystem and how much disk space is being used. 
 
 ![image](https://user-images.githubusercontent.com/110232966/181746751-2ff2a76e-4efa-48cd-8e4a-99fe4c83a7d2.png)
@@ -88,22 +98,22 @@ Assuming that the address length is 24 bits and that the inode supports 10 direc
 
 ----------------------------------------------------------------------------------------------------------------
 
-Max file size = No of direct disk block pointer + (DBS/DBA) + (DBS/DBA) ^2 + (DBS/DBA) ^3+ (DBS/DBA) ^N) *DBS
+	Max file size = No of direct disk block pointer + (DBS/DBA) + (DBS/DBA) ^2 + (DBS/DBA) ^3+ (DBS/DBA) ^N) *DBS
 
-DBS = Disk Block size= 1024 bytes = 1KB
-DBA = Disk Block address size = 24 bits = 3 bytes
+	DBS = Disk Block size= 1024 bytes = 1KB
+	DBA = Disk Block address size = 24 bits = 3 bytes
 
-The number of disk block pointer that can fit in one block pointer = DBS/DBA = 1024/3 = 341.3333 = 341
+	The number of disk block pointer that can fit in one block pointer = DBS/DBA = 1024/3 = 341.3333 = 341
 
-The number of block 10 direct address entries can address = 10 
-The number of block one primary indirect block can address = 341
-Max file size = (341+10) *1KB = (351) * 1024 = 359424 bytes
+	The number of block 10 direct address entries can address = 10 
+	The number of block one primary indirect block can address = 341
+	Max file size = (341+10) *1KB = (351) * 1024 = 359424 bytes
 
 ----------------------------------------------------------------------------------------------------------------
 
 
-
 [Implementation]
+
 We first define the header files and some constant variables as shown in figure1.1. In this program, we allocate 1024 bytes as block size, and 16384 bytes as block number. This maintains the 16MB storage capacity of the file system based on BLOCK_NUM x BLOCK_SIZE. Considering we are implementing a small file system, INODE_SIZE is assigned 128 bytes as per standards, and the INODE_NUM is 1024.
 
 The Flag bit indicates if the object is a file (0) or a directory (1) and is used to initialize the number of direct blocks in the inode, as well as maximum values for the name, file size, and the number of directories. 
@@ -127,26 +137,29 @@ o	Remove Functions
 o	File Functions
 
 
+	Allocation 
 
-
- 	Allocation 
 This section defines the ialloc () and balloc () functions as shown in the figure1.4. The inode allocation function assigns an inode to a newly created file, whereas the block allocation function assigns a block to the data of the newly created file.
 If the function is unable to allocate successfully, it returns -1 otherwise it returns the inode/block address.
 
 
- 	Update Functions 
+	Update Functions 
+
 In this section, the functions update the inode bitmap, the block bitmap, and the super bitmap as shown in figure1.5. It utilizes the file stream methods; seekp () and write (). In the seekp () method, the pointer is set to the start of the inode/block bitmap address and the stream is modified from the beginning, and in the write () method, the value of the inode/block bitmap is inserted into the constant pointer to the inode bitmap address. The updateSuperblock () works similarly
 
 
-    Get Addresses  
+	Get Addresses  
+
 This section contains three functions; getDirAddr (), getPathInodeAddr (), and getBlockAddr () which return the location of our directory/file so that the system can find them based on user input as shown in the figure1.6.
 The getDirAddr () returns the directory item address using either the direct or indirect addressing. If the path cannot be explored further, getPathInodeAddr () returns the inode path address for the current working directory, if path == "/" it returns the root. We iterate over the path size if the path is not root and if the global variables for the respective functions are set to true, we execute an if statement that returns the address as per the file type.  The getBlockAddr () maps to the block address from the current inode. 
 
 
-    Block Functions 
+	Block Functions 
+
 A block address can be read and written using the bwrite () and bprint () functions.
 
- 	Check functions 
+	Check functions 
+
 The isvalid () function checks if the file and the directory name are valid by checking if the given characters are alphanumeric or not. If it is, then it returns true or else false. Whereas the check () function checks whether the given path is in the “/string/” format
 
 
