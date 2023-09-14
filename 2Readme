@@ -1,0 +1,75 @@
+# Unix File System - C++ Implementation
+
+---
+
+## Project Overview
+
+This GitHub repository contains a C++ implementation of an inode-based Unix-style file system. The project aims to replicate key functionalities of a Unix file system while utilizing C++ for development.
+
+## Key Objectives
+
+The project addresses the following objectives:
+
+1. **Review Unix File System Design**: A comprehensive examination of Unix file system design principles and inode usage.
+
+2. **Design and Implementation**: The design and implementation of an inode-based Unix-style file system.
+
+3. **Basic Functionalities**: Implementation of essential file system functionalities as detailed in the project description.
+
+4. **C++ Exclusive**: Complete all project tasks using C++ as the sole programming language.
+
+---
+
+## Project Functionalities
+
+The Unix file system implemented in this project offers the following functionalities:
+
+1. **Storage Allocation**: Allocates 16MB of memory space for file storage, with blocks of 1KB each.
+
+2. **Virtual Address Structure**: Designs a virtual address structure with a 24-bit address length.
+
+3. **Inode Design**: Defines the structure and information contained in an inode, supporting 10 direct block addresses and one indirect block address.
+
+4. **Root Directory**: The first blocks are reserved for storing inodes, with the initial inode designated for the root directory ("/").
+
+5. **File Population**: Populates files with random strings, allowing users to specify file size (in KB) and path+name.
+
+6. **Command Support**: Supports a range of commands for interacting with the file system, including creating files and directories, deleting files and directories (except the current working directory), changing the current working directory, listing directory contents, copying files, displaying storage space usage, and printing file contents.
+
+---
+
+## Project Report
+
+### Background
+
+The Unix file system is a highly efficient and hierarchical method for organizing and storing data. It treats everything as a file, employs a multi-level directory tree structure, and uses inodes to uniquely identify files and directories.
+
+Early Unix file systems were straightforward but became inefficient for larger disks. Optimizations, such as cylinder groups in BSD FFS, were introduced to address these issues.
+
+### Project Design
+
+This project implements an inode-based file system. It allocates 16MB of memory, uses a 24-bit virtual address structure, and employs inodes for metadata and data block pointers. The file system structure includes superblocks, inodes, block bitmaps, inode space, and data space.
+
+### Implementation
+
+The project's implementation encompasses various functions for inode and block allocation, address retrieval, block management, input validation, formatting, directory operations, and file-related functionalities.
+
+### Main Function
+
+The main function serves as the user interface for interacting with the file system. It loads the superblock and file system, displays a welcome message, lists available commands, and allows users to execute commands and interact with the file system.
+
+---
+
+## Supporting Information
+
+The Unix file system is a highly efficient and hierarchical method for organizing and storing data. It employs a hierarchical directory tree structure, with the root directory ("/") at the top level.
+
+This project's C++ implementation of an inode-based file system allocates 16MB of memory, using 1KB blocks. It replicates key features of a Unix file system, providing a versatile and functional environment for file and directory management.
+
+![File System Diagram](https://user-images.githubusercontent.com/110232966/181750115-08405af5-8a25-49c1-9b34-3c6afb0fbe0f.png)
+
+(Note: The diagram represents a simplified structure of the file system.)
+
+---
+
+**Note:** If you have questions, issues, or feedback, please feel free to open an [issue](https://github.com/yourusername/your-repository/issues) or submit a [pull request](https://github.com/yourusername/your-repository/pulls). Your contributions and feedback are highly appreciated.
